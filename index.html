@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tata Surya 3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="intro-screen">
+    <div class="intro-content">
+      <p class="intro-label">DEEP SPACE EXPLORATION</p>
+      <h2 id="intro-title">ENTERING THE UNIVERSE</h2>
+      <div class="intro-line"></div>
+      <p class="intro-subtitle">PREPARING SOLAR SYSTEM</p>
+    </div>
+  </div>
+
+  <h1>TATA SURYA 3D</h1>
+  <p>Seret untuk memutar • Scroll untuk zoom • Klik planet untuk info</p>
+
+  <div id="scene"></div>
+
+  <!-- PANEL EXPLORASI PLANET -->
+  <div id="planet-panel">
+    <h3>PLANET EXPLORER</h3>
+    <button data-planet="Matahari" onclick="focusPlanet('Matahari')">Matahari</button>
+    <button data-planet="Merkurius" onclick="focusPlanet('Merkurius')">Merkurius</button>
+    <button data-planet="Venus" onclick="focusPlanet('Venus')">Venus</button>
+    <button data-planet="Bumi" onclick="focusPlanet('Bumi')">Bumi</button>
+    <button data-planet="Mars" onclick="focusPlanet('Mars')">Mars</button>
+    <button data-planet="Jupiter" onclick="focusPlanet('Jupiter')">Jupiter</button>
+    <button data-planet="Saturnus" onclick="focusPlanet('Saturnus')">Saturnus</button>
+    <button data-planet="Uranus" onclick="focusPlanet('Uranus')">Uranus</button>
+    <button data-planet="Neptunus" onclick="focusPlanet('Neptunus')">Neptunus</button>
+  </div>
+
+  <!-- KONTROL WAKTU -->
+  <div id="time-panel">
+    <button id="pause-btn" type="button">⏸ Jeda</button>
+    <label for="speed-range">Kecepatan <span id="speed-value">1.0x</span></label>
+    <input id="speed-range" type="range" min="0.2" max="5" step="0.1" value="1">
+    <div class="toggle-row">
+      <input id="label-toggle" type="checkbox" checked>
+      <label for="label-toggle">Label nama</label>
+    </div>
+  </div>
+
+  <!-- KARTU INFO PLANET (muncul saat planet diklik) -->
+  <div id="info-card" class="info-hidden">
+    <button id="info-close" aria-label="Tutup">×</button>
+    <span id="info-type" class="info-type"></span>
+    <h2 id="info-name"></h2>
+    <dl>
+      <dt>Diameter</dt>
+      <dd id="info-diameter"></dd>
+      <dt>Jarak dari Matahari</dt>
+      <dd id="info-distance"></dd>
+      <dt>Orbit</dt>
+      <dd id="info-orbit"></dd>
+    </dl>
+    <div id="info-fact"></div>
+    <div class="info-note">Ukuran dan jarak di tampilan ini tidak sesuai skala.</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="angkasa.js"></script>
+
+</body>
+</html>

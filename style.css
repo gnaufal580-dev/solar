@@ -1,0 +1,524 @@
+/* =========================================================
+   TEMA WARNA (ganti di sini kalau mau ubah warna)
+   ========================================================= */
+:root {
+  --bg: #02030a;
+
+  --panel-bg: rgba(8, 8, 8, 0.78);
+  --panel-border: rgba(255, 255, 255, 0.22);
+
+  --accent: #e8e8e8;         /* putih lembut */
+  --accent-strong: #ffffff;  /* putih terang */
+  --accent-soft: #b8b8b8;    /* abu terang */
+
+  --text: #f5f5f5;
+  --text-soft: #c2c2c2;
+  --text-dim: #8a8a8a;
+
+  --btn-bg: rgba(255, 255, 255, 0.07);
+  --btn-border: rgba(255, 255, 255, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  position: fixed;
+  top: 18px;
+  left: 25px;
+  z-index: 2;
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #ffffff, #b5b5b5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* hanya paragraf yang jadi anak langsung body */
+body > p {
+  position: fixed;
+  top: 58px;
+  left: 27px;
+  z-index: 2;
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+}
+
+#scene canvas {
+  display: block;
+  cursor: grab;
+}
+
+
+/* =========================================================
+   INTRO CINEMATIC
+   ========================================================= */
+
+#intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: #ffffff;
+  opacity: 1;
+  transition: opacity 1.5s ease;
+}
+
+.intro-content {
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  animation: introReveal 2s ease both;
+}
+
+#intro-screen .intro-label {
+  margin: 0 0 24px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 5px;
+  line-height: 1.8;
+}
+
+#intro-title {
+  margin: 0;
+  font-size: clamp(22px, 5vw, 56px);
+  font-weight: 300;
+  letter-spacing: 5px;
+  line-height: 1.5;
+  background: linear-gradient(90deg, #ffffff, #c8c8c8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro-line {
+  width: 0;
+  height: 1px;
+  margin: 28px auto;
+  background: linear-gradient(90deg, transparent, var(--accent-strong), var(--accent), transparent);
+  box-shadow: 0 0 14px var(--accent-strong);
+  animation: lineExpand 2s ease 0.5s forwards;
+}
+
+#intro-screen .intro-subtitle {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+@keyframes introReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes lineExpand {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: min(280px, 70%);
+  }
+}
+
+#intro-screen.intro-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GAYA PANEL (dipakai bareng oleh 3 panel)
+   ========================================================= */
+
+#planet-panel,
+#time-panel,
+#info-card {
+  position: fixed;
+  z-index: 5;
+  padding: 16px;
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+
+/* =========================================================
+   PANEL PLANET EXPLORER
+   ========================================================= */
+
+#planet-panel {
+  left: 20px;
+  bottom: 20px;
+  width: 185px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+}
+
+#planet-panel h3 {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+#planet-panel button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--btn-border);
+  border-radius: 10px;
+  background: var(--btn-bg);
+  color: var(--text);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+/* titik di depan nama planet (putih; mau berwarna lagi? isi --dot per planet) */
+#planet-panel button::before {
+  content: "";
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot, #ffffff);
+  box-shadow: 0 0 8px var(--dot, #ffffff);
+}
+
+#planet-panel button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(3px);
+}
+
+/* planet yang sedang difokuskan */
+#planet-panel button.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.25);
+}
+
+
+
+/* =========================================================
+   PANEL KONTROL WAKTU (jeda + kecepatan)
+   ========================================================= */
+
+#time-panel {
+  top: 20px;
+  right: 20px;
+  width: 195px;
+}
+
+#time-panel button {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  border: none;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.15s;
+}
+
+#time-panel button:hover {
+  filter: brightness(0.85);
+  transform: translateY(-1px);
+}
+
+#time-panel label {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 0 8px;
+  color: var(--text-soft);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#speed-value {
+  color: var(--accent-strong);
+  font-weight: bold;
+}
+
+#time-panel input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #ffffff, #6f6f6f);
+  outline: none;
+  cursor: pointer;
+}
+
+#time-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000000;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+#time-panel input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #000000;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+#time-panel .toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+#time-panel .toggle-row label {
+  margin: 0;
+  cursor: pointer;
+}
+
+#time-panel .toggle-row input {
+  accent-color: var(--accent-strong);
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   KARTU INFO PLANET
+   (warna aksen otomatis ganti sesuai planet lewat --accent di JS)
+   ========================================================= */
+
+#info-card {
+  right: 20px;
+  bottom: 20px;
+  width: 310px;
+  padding: 20px;
+  border-top: 3px solid var(--accent);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#info-card.info-hidden {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+
+#info-card .info-type {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+#info-card h2 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-shadow: 0 0 18px var(--accent);
+}
+
+#info-card dl {
+  margin: 0 0 14px;
+}
+
+#info-card dt {
+  margin-top: 10px;
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#info-card dd {
+  margin: 3px 0 0;
+  color: var(--text);
+  font-size: 14px;
+}
+
+#info-fact {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#info-card .info-note {
+  margin-top: 12px;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-style: italic;
+}
+
+#info-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#info-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================================
+   LABEL NAMA PLANET
+   ========================================================= */
+
+#label-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.planet-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-shadow: 0 0 4px #000, 0 0 8px #000;
+  will-change: transform;
+}
+
+
+/* =========================================================
+   LAYAR KECIL (HP): daftar planet jadi strip di bawah,
+   kartu info naik di atas strip, kontrol waktu tetap di kanan atas
+   ========================================================= */
+
+@media (max-width: 640px) {
+  h1 {
+    top: 14px;
+    left: 16px;
+    font-size: 18px;
+    letter-spacing: 3px;
+  }
+
+  body > p {
+    top: 42px;
+    left: 17px;
+    max-width: calc(100% - 200px);
+    font-size: 10px;
+  }
+
+  #time-panel {
+    top: 12px;
+    right: 12px;
+    width: 160px;
+    padding: 10px;
+  }
+
+  #planet-panel {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    max-height: none;
+    padding: 8px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  #planet-panel h3 {
+    display: none;
+  }
+
+  #planet-panel button {
+    flex: 0 0 auto;
+    width: auto;
+    margin-top: 0;
+    white-space: nowrap;
+  }
+
+  #planet-panel button:hover {
+    transform: none;
+  }
+
+  #info-card {
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 76px;
+    width: auto;
+    max-height: 45vh;
+    overflow-y: auto;
+  }
+}
